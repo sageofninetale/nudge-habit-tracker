@@ -1,0 +1,388 @@
+import { useEffect, useState } from "react";
+import DashboardTabs from "./components/DashboardTabs";
+import WeeklyProgress from "./components/WeeklyProgress";
+import AchievementBadges from "./components/AchievementBadges";
+import CalendarView from "./components/CalendarView";
+
+const STORAGE_KEY = "sparkHabit_v1";
+
+const defaultHabits = [
+  {
+    id: 1,
+    name: "Drink 2L of water",
+    emoji: "💧",
+    frequency: "Daily",
+    streak: 0,
+    lastCompleted: null,
+  },
+  {
+    id: 2,
+    name: "10 min walk",
+    emoji: "🚶‍♂️",
+    frequency: "Daily",
+    streak: 0,
+    lastCompleted: null,
+  },
+];
+
+function loadHabits() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return defaultHabits;
+    return JSON.parse(saved);
+  } catch {
+    return defaultHabits;
+  }
+}
+
+function saveHabits(habits) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(habits));
+}
+
+function isSameDay(dateA, dateB) {
+  const a = new Date(dateA);
+  const b = new Date(dateB);
+  return (
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
+  );
+}
+
+function isYesterday(dateString) {
+  const d = new Date(dateString);
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  return isSameDay(d, yesterday);
+}
+
+function App() {
+  const [habits, setHabits] = useState(() => loadHabits());
+  const [name, setName] = useState("");
+  const [emoji, setEmoji] = useState("🔥");
+  const [frequency, setFrequency] = useState("Daily");
+  const [activeView, setActiveView] = useState(() => {
+    return localStorage.getItem('sparkHabit_activeView') || 'overview';
+  });
+
+  const [coachMessage, setCoachMessage] = useState(
+    "Keep streaks alive. Even a tiny version of the habit counts as a win."
+  );
+  const [coachLoading, setCoachLoading] = useState(false);
+  const [coachError, setCoachError] = useState("");
+
+  useEffect(() => {
+    saveHabits(habits);
+  }, [habits]);
+
+  useEffect(() => {
+    localStorage.setItem('sparkHabit_activeView', activeView);
+  }, [activeView]);
+
+  const today = new Date().toLocaleDateString("en-GB", {
+    weekday: "long",
+    day: "numeric",
+    month: "short",
+  });
+
+  function handleAddHabit(e) {
+    e.preventDefault();
+    if (!name.trim()) return;
+
+    const newHabit = {
+      id: Date.now(),
+      name: name.trim(),
+      emoji: emoji || "⭐",
+      frequency,
+      streak: 0,
+      lastCompleted: null,
+    };
+
+    setHabits((prev) => [newHabit, ...prev]);
+    setName("");
+  }
+
+  function handleCompleteToday(habitId) {
+    const now = new Date();
+    const todayStr = now.toISOString();
+
+    setHabits((prev) =>
+      prev.map((h) => {
+        if (h.id !== habitId) return h;
+
+        // already done today → do nothing
+        if (h.lastCompleted && isSameDay(h.lastCompleted, todayStr)) {
+          return h;
+        }
+
+        let newStreak = 1;
+
+        if (h.lastCompleted && isYesterday(h.lastCompleted)) {
+          newStreak = h.streak + 1;
+        }
+
+        return {
+          ...h,
+          streak: newStreak,
+          lastCompleted: todayStr,
+        };
+      })
+    );
+  }
+
+  function handleDeleteHabit(habitId) {
+    setHabits((prev) => prev.filter((h) => h.id !== habitId));
+  }
+  async function fetchCoachAdvice() {
+    try {
+      setCoachError("");
+      setCoachLoading(true);
+
+      const response = await fetch("/api/coach", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ habits, completionRate, maxStreak }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Request failed");
+      }
+
+      const data = await response.json();
+      setCoachMessage(
+        data.message || "AI coach had no advice. Try again in a bit."
+      );
+    } catch (err) {
+      console.error(err);
+      setCoachError("AI coach is offline. Try again in a minute.");
+    } finally {
+      setCoachLoading(false);
+    }
+  }
+
+  const completedToday = habits.filter(
+    (h) => h.lastCompleted && isSameDay(h.lastCompleted, new Date())
+  ).length;
+
+  const completionRate =
+    habits.length === 0
+      ? 0
+      : Math.round((completedToday / habits.length) * 100);
+  const maxStreak = habits.reduce((max, h) => Math.max(max, h.streak), 0);
+
+  const streakLine =
+    maxStreak > 0
+      ? `Your longest streak right now is ${maxStreak} day${maxStreak > 1 ? "s" : ""
+      }.`
+      : "Once you’ve kept a habit for a few days, your streak will show up here.";
+
+  return (
+    <div className="app">
+      {/* Top Navigation Bar */}
+      <nav className="top-nav">
+        <div className="app-branding">
+          <h1 className="app-logo">SparkHabit</h1>
+          <span className="app-tagline">Build better habits, one day at a time</span>
+        </div>
+      </nav>
+
+      <p className="card-subtitle">Today</p>
+      <p className="today-date">{today}</p>
+    </div>
+
+            {/* Progress Ring */ }
+  <div className="progress-ring-container">
+    <div className="progress-ring">
+      <svg viewBox="0 0 140 140">
+        <defs>
+          <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#E97D49" />
+            <stop offset="100%" stopColor="#F8C163" />
+          </linearGradient>
+        </defs>
+        <circle
+          className="progress-ring-bg"
+          cx="70"
+          cy="70"
+          r="60"
+        />
+        <circle
+          className="progress-ring-fill"
+          cx="70"
+          cy="70"
+          r="60"
+          strokeDasharray={`${2 * Math.PI * 60}`}
+          strokeDashoffset={`${2 * Math.PI * 60 * (1 - completionRate / 100)}`}
+        />
+      </svg>
+      <div className="progress-ring-text">
+        <div className="progress-percentage">{completionRate}%</div>
+        <div className="progress-label">Complete</div>
+      </div>
+    </div>
+  </div>
+
+  {/* Stats */ }
+  <div className="today-stats">
+    <div className="stat-item">
+      <span className="stat-value">{completedToday}</span>
+      <span className="stat-label">Done</span>
+    </div>
+    <div className="stat-item">
+      <span className="stat-value">{habits.length}</span>
+      <span className="stat-label">Total</span>
+    </div>
+    <div className="stat-item">
+      <span className="stat-value">{maxStreak}</span>
+      <span className="stat-label">Best Streak</span>
+    </div>
+  </div>
+          </div >
+
+    {/* Add Habit Card */ }
+    < div className = "glass-card add-habit-card" >
+            <div className="card-header">
+              <h2 className="card-title">Add a Habit</h2>
+            </div>
+            <form onSubmit={handleAddHabit} className="habit-form">
+              <div className="form-group">
+                <label className="form-label">Emoji</label>
+                <input
+                  className="form-input"
+                  value={emoji}
+                  onChange={(e) => setEmoji(e.target.value)}
+                  maxLength={2}
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Habit Name</label>
+                <input
+                  className="form-input"
+                  placeholder="e.g. Read 10 pages"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Frequency</label>
+                <select
+                  className="form-select"
+                  value={frequency}
+                  onChange={(e) => setFrequency(e.target.value)}
+                >
+                  <option>Daily</option>
+                  <option>Weekdays</option>
+                  <option>Custom</option>
+                </select>
+              </div>
+              <button type="submit" className="btn-primary">
+                + Add Habit
+              </button>
+            </form>
+          </div >
+        </div >
+
+    {/* Right Column */ }
+    < div className = "right-column" >
+      {/* Habit Dashboard */ }
+      < div className = "glass-card habits-dashboard" >
+        <div className="dashboard-header">
+          <h2 className="card-title">Your Habits</h2>
+          <span className="habit-count-badge">
+            {habits.length} {habits.length === 1 ? "habit" : "habits"}
+          </span>
+        </div>
+
+  {
+    habits.length === 0 ? (
+      <div className="empty-state">
+        <div className="empty-state-icon">🎯</div>
+        <p className="empty-state-text">
+          No habits yet. Add your first habit to start building better routines.
+        </p>
+      </div>
+    ) : (
+    <ul className="habits-list">
+      {habits.map((habit) => {
+        const doneToday =
+          habit.lastCompleted &&
+          isSameDay(habit.lastCompleted, new Date());
+        return (
+          <li
+            key={habit.id}
+            className={`habit-card ${doneToday ? "completed" : ""}`}
+          >
+            <div className="habit-info">
+              <div className="habit-icon">{habit.emoji}</div>
+              <div className="habit-details">
+                <p className="habit-name">{habit.name}</p>
+                <p className="habit-meta">
+                  {habit.frequency} • Streak:{" "}
+                  <span className="habit-streak">{habit.streak}</span>
+                  {doneToday && (
+                    <span className="done-badge">✓ Done</span>
+                  )}
+                </p>
+              </div>
+            </div>
+            <div className="habit-actions">
+              <button
+                onClick={() => handleCompleteToday(habit.id)}
+                className={`btn-mark-done ${doneToday ? "done" : ""}`}
+                disabled={doneToday}
+              >
+                {doneToday ? "Done" : "Mark Done"}
+              </button>
+              <button
+                onClick={() => handleDeleteHabit(habit.id)}
+                className="btn-delete"
+                title="Delete habit"
+              >
+                ✕
+              </button>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  )
+  }
+          </div >
+
+    {/* AI Coach Panel */ }
+    < div className = "glass-card coach-panel" >
+      <div className="coach-header">
+        <h2 className="coach-title">Habit Coach ✨</h2>
+        <button
+          onClick={fetchCoachAdvice}
+          className="btn-ask-coach"
+          disabled={coachLoading}
+        >
+          {coachLoading ? "Thinking…" : "Ask AI Coach"}
+        </button>
+      </div>
+
+  {
+    coachError && (
+      <div className="coach-error">{coachError}</div>
+    )
+  }
+
+  <div className="coach-message">
+    <p className="coach-text">{coachMessage}</p>
+    <p className="coach-secondary">{streakLine}</p>
+  </div>
+          </div >
+        </div >
+      </div >
+
+    {/* Footer */ }
+    < footer className = "app-footer" >
+      Built with React • Data stored locally in your browser • No login needed
+      </footer >
+    </div >
+  );
+
+}
+
+export default App;
