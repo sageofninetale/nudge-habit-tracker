@@ -18,7 +18,7 @@ It helps users build consistent habits with:
 
 1. Clone the repo:
    ```bash
-   git clone <REPO_URL>
+   git clone https://github.com/sageofninetale/nudge-habit-tracker.git
    ```
 
 2. Install dependencies:
