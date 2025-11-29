@@ -4,6 +4,10 @@
 
 A personal habit tracker with a witty AI coach that celebrates tiny wins and keeps you motivated without the guilt.
 
+### 🚀 Live Demo  
+Try NUDGE instantly here:  
+👉 https://nudgecoach.vercel.app
+
 ---
 
 ## What is NUDGE?
