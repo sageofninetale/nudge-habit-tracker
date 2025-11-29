@@ -40,7 +40,7 @@ export default function Settings({ isOpen, onClose }) {
       <div className="settings-modal-content">
         <div className="settings-header">
           <h2>Settings</h2>
-          <button 
+          <button
             className="settings-close-btn"
             onClick={onClose}
             aria-label="Close settings"
@@ -74,9 +74,9 @@ export default function Settings({ isOpen, onClose }) {
             </div>
             <p className="settings-note">
               🔒 Your API key is stored only in your browser. Get one free at{' '}
-              <a 
-                href="https://openrouter.ai/keys" 
-                target="_blank" 
+              <a
+                href="https://openrouter.ai/keys"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="settings-link"
               >

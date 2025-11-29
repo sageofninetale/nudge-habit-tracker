@@ -26,3 +26,13 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Backup files
+*.backup
+*.backup[0-9]
+*.backup[0-9][0-9]
+*backup*/
+
+# Build directories
+build/
+.github/

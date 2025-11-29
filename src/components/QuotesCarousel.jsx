@@ -29,14 +29,13 @@ export default function QuotesCarousel() {
         setTimeout(() => setIsAnimating(false), 500);
     };
 
-    // Auto-advance every 7-10 seconds (random interval)
+    // Auto-advance every 6 seconds
     useEffect(() => {
-        const randomInterval = Math.floor(Math.random() * (10000 - 7000 + 1)) + 7000;
         const interval = setInterval(() => {
-            nextQuote();
-        }, randomInterval);
+            setCurrentIndex((prev) => (prev + 1) % athleteQuotes.length);
+        }, 6000);
         return () => clearInterval(interval);
-    }, [currentIndex]);
+    }, []);
 
     const currentQuote = athleteQuotes[currentIndex];
 
@@ -54,7 +53,7 @@ export default function QuotesCarousel() {
                     <p className="quote-text-refined">"{currentQuote.text}"</p>
                     <p className="quote-author-refined">— {currentQuote.author}</p>
                 </div>
-                
+
                 {/* Slider Dots Below Quote */}
                 <div className="carousel-dots">
                     {athleteQuotes.map((_, index) => (

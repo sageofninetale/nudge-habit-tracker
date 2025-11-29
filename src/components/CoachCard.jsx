@@ -46,16 +46,27 @@ export default function CoachCard({ stats }) {
   const [error, setError] = useState(null);
   const [showSettings, setShowSettings] = useState(false);
   const messagesEndRef = useRef(null);
+  const hasMountedRef = useRef(false);
 
-  // Auto-scroll to bottom when messages change
+  // Mark component as mounted after initial render
   useEffect(() => {
+    const timer = setTimeout(() => {
+      hasMountedRef.current = true;
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Auto-scroll to bottom when messages change (only after component is fully mounted)
+  useEffect(() => {
+    if (!hasMountedRef.current) return;
+    if (!messages || messages.length === 0) return;
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   // Free-text message sending (uses OpenRouter)
   const sendMessage = async (userMessage) => {
     if (isLoading) return;
-    
+
     // Check if API key is configured
     if (!hasApiKey()) {
       setError('API key not configured. Click the ⚙️ icon to add your OpenRouter API key.');
@@ -88,14 +99,14 @@ export default function CoachCard({ stats }) {
       setMessages([...updatedMessages, { role: 'assistant', content: response }]);
     } catch (err) {
       console.error('Coach AI error:', err);
-      
+
       if (err.message === 'API_KEY_MISSING' || err.message === 'INVALID_API_KEY') {
         setError('Invalid API key. Please check your settings.');
         setShowSettings(true);
       } else {
         setError('Oops! Something went wrong. Try again?');
       }
-      
+
       // Remove the user message if there was an error
       setMessages(updatedMessages.slice(0, -1));
     } finally {
@@ -138,14 +149,14 @@ export default function CoachCard({ stats }) {
         setMessages([...updatedMessages, { role: 'assistant', content: response }]);
       } catch (err) {
         console.error('Coach AI error:', err);
-        
+
         if (err.message === 'API_KEY_MISSING' || err.message === 'INVALID_API_KEY') {
           setError('Invalid API key. Please check your settings.');
           setShowSettings(true);
         } else {
           setError('Oops! Something went wrong. Try again?');
         }
-        
+
         // Remove the user message if there was an error
         setMessages(updatedMessages.slice(0, -1));
       } finally {
@@ -155,7 +166,7 @@ export default function CoachCard({ stats }) {
     } else if (action === 'challenge') {
       // Flow 2: "Give me a mini task" - Local array, no AI
       const randomChallenge = microChallenges[Math.floor(Math.random() * microChallenges.length)];
-      
+
       setMessages(prev => [
         ...prev,
         { role: 'user', content: 'Give me a mini task' },
@@ -165,7 +176,7 @@ export default function CoachCard({ stats }) {
     } else if (action === 'done') {
       // Flow 3: "I did it" - Local celebration, no AI
       const randomCelebration = celebrationReplies[Math.floor(Math.random() * celebrationReplies.length)];
-      
+
       setMessages(prev => [
         ...prev,
         { role: 'user', content: 'I did it' },
@@ -208,7 +219,7 @@ export default function CoachCard({ stats }) {
             </div>
           </div>
         ))}
-        
+
         {isLoading && (
           <div className="coach-message assistant">
             <div className="coach-message-content coach-loading">
@@ -218,7 +229,7 @@ export default function CoachCard({ stats }) {
             </div>
           </div>
         )}
-        
+
         <div ref={messagesEndRef} />
       </div>
 
