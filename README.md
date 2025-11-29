@@ -1,202 +1,244 @@
 # NUDGE 🎯
 
-🚀 **Live Demo:** https://nudgecoach.vercel.app/
+> **A gentle nudge toward better days**
 
-**A beautiful AI-powered habit tracker with a witty personal coach**
-
-
-## 🚀 Live Demo
-
-Try NUDGE instantly here:  
-👉 **https://nudgecoach.vercel.app**
+A personal habit tracker with a witty AI coach that celebrates tiny wins and keeps you motivated without the guilt.
 
 ---
 
-## 📖 Project Overview
+## What is NUDGE?
 
-**NUDGE** is a modern habit tracking application that helps you build better habits through gentle encouragement rather than harsh accountability. Unlike traditional habit trackers that focus on punishment and guilt, NUDGE celebrates your progress and provides personalized motivation.
+**NUDGE** is a dark-mode habit tracking app built for friends and portfolio reviewers who want to see a clean, AI-powered product in action. Unlike traditional habit trackers that focus on streaks and punishment, NUDGE emphasizes:
 
-### What NUDGE Does
-- Track your daily habits with smart emoji detection
-- Get personalized encouragement from Coach Nudge, your AI assistant
-- Celebrate tiny wins and build momentum
-- Stay motivated with daily athlete quotes
-- Keep your data private with local browser storage
+- **Gentle encouragement** over harsh accountability
+- **Tiny wins** that build real momentum
+- **Coach Nudge** — a playful AI assistant that knows your stats and gives you personalized nudges
 
-### Why It Exists
-Most habit trackers make you feel bad when you miss a day. NUDGE takes a different approach—it focuses on what you *did* accomplish and gives you gentle nudges to keep going. It's designed to be encouraging, not punishing.
+Built with React + Vite, powered by OpenRouter AI, and designed to feel premium from the first interaction. No backend required — everything runs in your browser with localStorage persistence.
 
-### What Makes It Unique
-- 🤖 **Coach Nudge AI** — A witty AI assistant that knows your stats and gives personalized advice
-- 🎯 **Tiny Wins** — Micro-challenges that build real momentum (e.g., "Take 3 sips of water")
-- 🎨 **Smart Emoji Habits** — Type "morning run" and automatically get 🏃‍♂️ (30+ categories)
-- 🔥 **Streak Tracking** — Automatic consecutive day calculation
-- 💬 **Motivational Quotes** — Daily inspiration from world-class athletes
-- 🔒 **Privacy-First** — All data stored locally in your browser, no backend required
-- 🎉 **Celebration Moments** — Special modal when you complete all habits
-- 🛡️ **Safety Logic** — Blocks unhealthy habits like smoking with witty warnings
+**Try it**: Add a habit, mark it done, and ask Coach Nudge "How am I doing?" to see AI-powered encouragement based on your actual progress.
 
 ---
 
-## ✨ Features
+## ✨ Key Features
 
-### 🏠 Personalized Experience
-- **Time-based greeting** — "Good morning, [Your Name]!" based on the time of day
-- **Welcome modal** — Captures your name on first visit for personalization
-- **Custom dashboard** — See your progress at a glance
+### 📊 Today Dashboard
+- **Date display** with time-based greeting (Good morning/afternoon/evening)
+- **Completion ring** showing daily progress percentage
+- **Quick stats**: Done / Total / Best Streak
 
-### 📊 Habit Management
-- **Add habits** with name and frequency (Daily/Weekdays/Weekends)
-- **Smart emoji detection** — Automatically assigns relevant emojis based on habit name
-- **Streak tracking** — Consecutive days calculated automatically
-- **One-click completion** — Mark habits done with visual feedback
-- **Easy deletion** — Remove habits you no longer need
+### 🎯 Habit Management
+- **Add habits** with name + frequency (Daily/Weekdays/Weekends)
+- **Smart emoji assignment** — type "morning run" → automatically gets 🏃‍♂️ (30+ categories)
+- **Streak tracking** — consecutive days automatically calculated
+- **Mark done** button with visual feedback
+- **Delete habits** with one click
 
-### 🤖 Coach Nudge (AI Assistant)
-Your personal AI habit coach with multiple interaction modes:
+### 🧠 Coach Nudge (AI Assistant)
+Coach Nudge has **4 interaction modes**:
 
-1. **"How am I doing?"** — Get personalized feedback based on your actual stats
-2. **"Give me a mini task"** — Receive instant micro-challenges (no AI needed)
-3. **"I did it"** — Get celebration messages for completing challenges
-4. **Free-form chat** — Ask anything about habits, motivation, or productivity
+1. **"How am I doing?"** → AI analyzes your stats and gives personalized feedback
+   - *Example: "You've done 3/5 so far — that's real momentum. One more and you'll level up today 💪"*
 
-### 🎯 Tiny Wins
-- **Micro-challenges** — Small, achievable tasks like "Do 5 air squats" or "Take 3 deep breaths"
-- **Instant gratification** — Complete them right now for a quick win
-- **Momentum building** — Small wins lead to bigger achievements
+2. **"Give me a mini task"** → Random micro-challenge (no AI needed)
+   - *Examples: "Take 3 sips of water", "Do 5 air squats", "Smile at yourself in your phone camera"*
 
-### 💬 Daily Motivation
-- **Athlete quotes carousel** — 8 inspiring quotes from Ronaldo, Messi, Serena Williams, and more
-- **Auto-rotating** — New quote every 6 seconds
-- **Manual navigation** — Click arrows or dots to browse quotes
+3. **"I did it"** → Instant celebration message
+   - *Examples: "Hooray! Tiny win, big momentum 🎉", "Boom! You just nudged your day in the right direction 🚀"*
 
-### 🎉 Celebration Modal
-- **Triggers at 100% completion** — Appears when you finish all habits for the day
-- **Feedback collection** — Asks "Did you feel good?" to track your emotional progress
-- **Encouraging design** — Celebrates your achievement with confetti emoji
+4. **Free-form chat** → Ask anything habit-related
+   - *Examples: "Who are you?", "I feel tired", "What should I do today?"*
 
-### 🛡️ Safety Features
-- **Unhealthy habit blocker** — Prevents adding habits like "smoking", "vaping", or "self-harm"
-- **Witty warnings** — "Coach Nudge says: that one's more of a villain than a habit 🫣"
-- **Input retention** — Keeps your text so you can edit it to something healthier
+### 🛡️ Guard Rails
+- **Unhealthy habit blocker** — typing "smoking", "vaping", "self-harm" triggers a witty warning:
+  - *"Coach Nudge says: that one's more of a villain than a habit 🫣. Let's pick something that actually nudges your health in the right direction."*
+- Habit is blocked, input retained for editing
 
-### 📱 Responsive Design
-- **Mobile-first** — Works perfectly on phones, tablets, and desktops
-- **Dark theme** — Easy on the eyes with premium glassmorphism effects
-- **Smooth animations** — Polished transitions and micro-interactions
-
-### 💾 Data Persistence
-- **LocalStorage** — All habits and settings saved in your browser
-- **No backend required** — Works completely offline after first load
-- **Privacy-focused** — Your data never leaves your device
+### 🎉 Motivation Layer
+- **Tiny Wins card** — auto-updates with achievements like "You completed 3 habits today 🎉"
+- **Athlete quotes carousel** — 8 quotes from Ronaldo, Messi, Serena, etc. (auto-rotates every 7-10s)
+- **100% Celebration modal** — appears when all habits are done, asks "Did you feel good?"
 
 ---
 
-## 🚀 How to Use Coach Nudge
+## 🏗️ Architecture Overview
 
-Coach Nudge is powered by AI, but you need to provide your own free API key to use it. Here's a simple guide:
+### Tech Stack
+- **Frontend**: React 19.2.0 + Vite 7.2.4
+- **Styling**: Vanilla CSS with dark theme, glassmorphism, and smooth animations
+- **AI Integration**: OpenRouter API → `openai/gpt-oss-20b:free` model
+- **State Management**: React hooks (`useState`, `useEffect`)
+- **Data Persistence**: Browser localStorage (no backend)
+- **Analytics**: Simple Analytics (privacy-friendly, no cookies)
 
-### Step 1: Open NUDGE
-Open the NUDGE app in your browser.
+### System Architecture
 
-### Step 2: Find the Settings Button
-Scroll down to the **Coach Nudge** widget and click the **⚙️ Settings** icon in the top-right corner.
+```mermaid
+flowchart LR
+    A[Browser UI<br/>React App] --> B[Habit State<br/>localStorage]
+    A --> C[Coach Nudge<br/>Logic]
+    C --> D[OpenRouter<br/>Client]
+    D --> E[OpenRouter API<br/>GPT-OSS-20B]
+    E --> D
+    D --> C
+    C --> A
+    A --> F[Simple<br/>Analytics]
+    
+    style A fill:#2d2d2d,stroke:#ff9f66,stroke-width:2px,color:#fff
+    style C fill:#3d3d3d,stroke:#f8c163,stroke-width:2px,color:#fff
+    style E fill:#1a1a1a,stroke:#ff9f66,stroke-width:2px,color:#fff
+```
 
-### Step 3: Get Your Free API Key
-1. Go to [https://openrouter.ai/](https://openrouter.ai/)
-2. Sign up for a free account (no credit card required)
-3. Navigate to [https://openrouter.ai/keys](https://openrouter.ai/keys)
-4. Click **"Create Key"**
-5. Copy your new API key (it starts with `sk-or-v1-...`)
-
-### Step 4: Add Your Key to NUDGE
-1. Paste your API key into the input field in the Settings modal
-2. Click **"Save API Key"**
-3. Your key is stored securely in your browser (never sent anywhere except OpenRouter)
-
-### Step 5: Start Chatting!
-Now you can:
-- Click **"How am I doing?"** to get personalized feedback
-- Type any question like "I feel tired" or "What should I focus on today?"
-- Get AI-powered encouragement based on your actual habit stats
-
-### Note About Free Tier
-The free OpenRouter model (`gpt-oss-20b`) has rate limits. If you hit them, just wait a few minutes. You can still use all other features without an API key!
-
----
-
-## 🛠️ Tech Stack
-
-### Frontend
-- **React 19.2.0** — Modern UI library
-- **Vite 7.2.4** — Lightning-fast build tool
-- **Vanilla CSS** — Custom dark theme with glassmorphism
-
-### AI Integration
-- **OpenRouter API** — Access to multiple AI models
-- **Model:** `openai/gpt-oss-20b:free` — Free tier for testing
-
-### Data & Deployment
-- **LocalStorage** — Browser-based persistence
-- **Vercel** — Serverless deployment platform
-- **Simple Analytics** — Privacy-friendly analytics (no cookies)
+### Key Files
+- [`App.jsx`](src/App.jsx) — Main app logic, habit CRUD, completion tracking
+- [`CoachCard.jsx`](src/components/CoachCard.jsx) — AI chat interface
+- [`openRouterClient.js`](src/lib/openRouterClient.js) — API integration with dynamic system prompts
+- [`habitEmoji.js`](src/lib/habitEmoji.js) — Smart emoji mapping engine (30+ categories)
+- [`App.css`](src/App.css) — All styling (dark theme, animations, mobile-responsive)
 
 ---
 
-## 💻 Local Development
+## 🤖 How Coach Nudge Works
 
-Want to run NUDGE on your own machine? Here's how:
+Coach Nudge is powered by **OpenRouter** with a personality-driven system prompt that includes your real-time stats.
+
+### "How am I doing?" Flow
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant CoachCard
+    participant App
+    participant OpenRouter
+    
+    User->>CoachCard: Clicks "How am I doing?"
+    CoachCard->>App: Request current stats
+    App-->>CoachCard: {completedToday: 3, totalHabits: 5, bestStreak: 7}
+    CoachCard->>CoachCard: Build system prompt with stats
+    CoachCard->>OpenRouter: POST /chat/completions<br/>(model: gpt-oss-20b, temp: 0.8)
+    OpenRouter-->>CoachCard: "You've done 3/5 so far — that's<br/>real momentum. One more and<br/>you'll level up today 💪"
+    CoachCard->>User: Display AI response
+```
+
+### System Prompt Structure
+The AI receives a dynamic prompt that includes:
+- **Identity**: "You are Coach Nudge, a friendly, witty habit coach..."
+- **Current stats**: Completed today, total habits, best streak
+- **Personality rules**: Warm, encouraging, 1-3 sentences max, minimal emojis
+- **Response templates**: For common questions like "Who are you?", "How does this work?"
+- **Guardrails**: Stay on-topic (habits, motivation), redirect off-topic questions gently
+
+### Local vs AI Features
+| Feature | Type | Why |
+|---------|------|-----|
+| "How am I doing?" | **AI** | Needs personalized analysis of stats |
+| "Give me a mini task" | **Local** | Random selection from 10 pre-written challenges |
+| "I did it" | **Local** | Random celebration from 6 pre-written messages |
+| Free-form chat | **AI** | Handles unpredictable questions |
+
+This hybrid approach keeps the app fast and reduces API costs while still feeling intelligent.
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 16+ and npm installed
+- Node.js 16+ and npm
 
 ### Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/sageofninetale/nudge-habit-tracker.git
+# Clone the repo
+git clone https://github.com/yourusername/nudge-habit-tracker.git
 cd nudge-habit-tracker/spark-habit
 
 # Install dependencies
 npm install
 
-# Start development server
+# Run dev server
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+Open `http://localhost:5173` in your browser.
 
-### Build for Production
+### Setting Up Coach Nudge (Optional)
 
-```bash
-npm run build
-```
+1. Get a **free OpenRouter API key** at [openrouter.ai/keys](https://openrouter.ai/keys)
+2. In NUDGE, click the **⚙️ icon** in the Coach Nudge card
+3. Paste your API key and click **Save**
+4. Your key is stored in browser localStorage (never sent anywhere except OpenRouter)
 
-The production build will be in the `dist/` folder.
+**Note**: The free `gpt-oss-20b` model has rate limits. If you hit them, wait a few minutes or upgrade to a paid model.
+
+### Without API Key
+You can still use NUDGE without an API key:
+- ✅ Add/track habits
+- ✅ View progress and streaks
+- ✅ "Give me a mini task" (local)
+- ✅ "I did it" (local)
+- ❌ "How am I doing?" (requires AI)
+- ❌ Free-form chat (requires AI)
 
 ---
 
-## 📸 Screenshots
+## 🎨 User Journey
 
-### Home Section
-![NUDGE Hero Section](https://via.placeholder.com/800x400/0B0B0F/FF9F66?text=NUDGE+Hero+Section)
-*Personalized greeting with animated wave and time-based welcome message*
+```mermaid
+flowchart TD
+    Start([Open NUDGE]) --> Welcome{First time?}
+    Welcome -->|Yes| Name[Enter name in<br/>Welcome Modal]
+    Welcome -->|No| Dashboard
+    Name --> Dashboard[See Today Dashboard<br/>Greeting + Progress Ring]
+    
+    Dashboard --> AddHabit[Add a habit<br/>e.g. Morning run]
+    AddHabit --> Emoji[Auto-assigned emoji 🏃‍♂️]
+    Emoji --> MarkDone[Mark habit done]
+    
+    MarkDone --> Stats[Stats update<br/>Completion ring fills]
+    Stats --> AskCoach[Ask How am I doing?]
+    AskCoach --> AIResponse[Get personalized<br/>AI encouragement]
+    
+    AIResponse --> MiniTask{Want a<br/>mini task?}
+    MiniTask -->|Yes| Challenge[Get micro-challenge<br/>e.g. 3 sips of water]
+    MiniTask -->|No| CheckComplete{100%<br/>complete?}
+    
+    Challenge --> DidIt[Click I did it]
+    DidIt --> Celebration[Get celebration<br/>message]
+    Celebration --> CheckComplete
+    
+    CheckComplete -->|Yes| Modal[🎉 Celebration Modal<br/>Did you feel good?]
+    CheckComplete -->|No| TinyWins[See Tiny Wins card<br/>+ Athlete quotes]
+    
+    Modal --> TinyWins
+    TinyWins --> End([Continue tracking])
+    
+    style Start fill:#2d2d2d,stroke:#ff9f66,stroke-width:2px,color:#fff
+    style Dashboard fill:#3d3d3d,stroke:#f8c163,stroke-width:2px,color:#fff
+    style AIResponse fill:#1a1a1a,stroke:#ff9f66,stroke-width:3px,color:#fff
+    style Modal fill:#3d3d3d,stroke:#f8c163,stroke-width:2px,color:#fff
+```
 
-### Habits & Tiny Wins
-![Habits Dashboard](https://via.placeholder.com/800x400/0B0B0F/FF9F66?text=Habits+%26+Tiny+Wins)
-*Track your habits, see your streaks, and celebrate tiny wins*
+---
 
-### Coach Nudge
-![Coach Nudge AI](https://via.placeholder.com/800x400/0B0B0F/FF9F66?text=Coach+Nudge+AI+Chat)
-*Chat with your personal AI habit coach for encouragement and advice*
+## 🌟 Why This Project Is Interesting
 
-### Daily Motivation
-![Quotes Carousel](https://via.placeholder.com/800x400/0B0B0F/FF9F66?text=Daily+Motivation+Quotes)
-*Auto-rotating carousel with inspiring quotes from world-class athletes*
+### Product Thinking
+- **Guard rails**: Blocks unhealthy habits with witty messaging instead of silent failures
+- **Tiny wins**: Celebrates micro-progress to build momentum (not just streaks)
+- **Hybrid AI**: Uses AI only where it adds value, keeps the rest local for speed
 
-### Celebration Modal
-![100% Completion](https://via.placeholder.com/800x400/0B0B0F/FF9F66?text=Celebration+Modal)
-*Special celebration when you complete all your habits for the day*
+### Technical Highlights
+- **No backend required** — AI integration purely client-side via OpenRouter
+- **Smart emoji engine** — keyword-based mapping with 30+ categories
+- **Dynamic system prompts** — AI receives fresh stats with every request
+- **Mobile-first design** — responsive grid layout with smooth animations
+- **localStorage persistence** — habits and API key stored securely in browser
+
+### Good Example Of
+- Building a focused AI product without over-engineering
+- Balancing AI features with local logic for performance
+- Creating a premium UI with vanilla CSS (no Tailwind/component libraries)
+- Product design that feels encouraging, not punishing
 
 ---
 
@@ -205,103 +247,54 @@ The production build will be in the `dist/` folder.
 ```
 spark-habit/
 ├── src/
-│   ├── App.jsx                    # Main application logic
+│   ├── App.jsx                    # Main app component (517 lines)
 │   ├── App.css                    # All styling (dark theme, animations)
 │   ├── components/
-│   │   ├── Hero.jsx               # Hero section with animated wave
+│   │   ├── Hero.jsx               # Animated hero with wave
 │   │   ├── CoachCard.jsx          # AI chat interface
-│   │   ├── QuotesCarousel.jsx     # Auto-rotating quotes
-│   │   ├── CelebrationModal.jsx   # 100% completion celebration
+│   │   ├── QuotesCarousel.jsx     # Athlete quotes
+│   │   ├── CelebrationModal.jsx   # 100% completion modal
 │   │   ├── WelcomeModal.jsx       # First-time name capture
 │   │   └── Settings.jsx           # API key configuration
 │   └── lib/
-│       ├── habitEmoji.js          # Smart emoji mapping (30+ categories)
-│       └── openRouterClient.js    # OpenRouter API integration
-├── docs/                          # Additional documentation
-├── index.html                     # Entry point
+│       ├── habitEmoji.js          # Smart emoji mapping
+│       └── openRouterClient.js    # OpenRouter API client
+├── index.html                     # Entry point + analytics
 ├── package.json                   # Dependencies
 └── vite.config.js                 # Vite configuration
 ```
 
 ---
 
-## 🎯 Key Features Explained
+## 📚 Documentation
 
-### Smart Emoji Detection
-Type a habit name and NUDGE automatically assigns a relevant emoji:
-- "morning run" → 🏃‍♂️
-- "drink water" → 💧
-- "read book" → 📚
-- "gym workout" → 🏋️‍♂️
-- "meditation" → 🧘
-
-Over 30 categories supported, with a default ⭐ for anything else.
-
-### Unhealthy Habit Blocker
-NUDGE prevents you from adding harmful habits:
-- Typing "smoking", "vaping", or "self-harm" triggers a friendly warning
-- Habit is blocked but your input is retained for editing
-- Encourages you to pick healthier alternatives
-
-### Hybrid AI Approach
-NUDGE uses AI strategically:
-- **AI-powered:** "How am I doing?" and free-form chat
-- **Local logic:** "Give me a mini task" and "I did it" (instant, no API needed)
-- This keeps the app fast while still feeling intelligent
+For deeper technical details, see:
+- [`PROJECT_DOCUMENTATION.md`](PROJECT_DOCUMENTATION.md) — Complete feature breakdown, architecture, and future roadmap
+- [`SYSTEM_WORKFLOW.md`](SYSTEM_WORKFLOW.md) — Data flows, workflows, and implementation details
 
 ---
 
-## 📚 Additional Documentation
+## 🔮 Future Ideas
 
-For deeper technical details:
-- [PROJECT_DOCUMENTATION.md](PROJECT_DOCUMENTATION.md) — Complete feature breakdown and architecture
-- [SYSTEM_WORKFLOW.md](SYSTEM_WORKFLOW.md) — Data flows and implementation details
-
----
-
-## 🔮 Future Enhancements
-
-Potential features for future versions:
-- Weekly summary emails with Coach Nudge insights
-- Habit templates (Morning Routine, Fitness, Productivity packs)
-- Photo proof for habit completion
-- Social sharing of progress cards
-- Theme customization (light mode, custom colors)
-- Optional cloud sync for multi-device access
+- **Weekly summary emails** with Coach Nudge insights
+- **Habit templates** (Morning Routine, Fitness, Productivity packs)
+- **Photo proof** — upload images when marking habits done
+- **Social sharing** — share progress cards to Twitter/Instagram
+- **Theme customization** — light mode, custom color schemes
+- **Backend sync** — optional cloud storage for multi-device access
 
 ---
 
 ## 📄 License
 
-MIT License — Free to use for learning or personal projects.
+MIT License — feel free to use this for learning or your own projects.
 
 ---
 
-## 👨‍💻 Credits
+## 👨‍💻 Author
 
-**Built by Aryan Subhash**
-
-NUDGE was designed and developed as a portfolio demonstration project, showcasing:
-- Modern React development with hooks and state management
-- AI integration with OpenRouter API
-- Product thinking (gentle encouragement vs. harsh accountability)
-- Premium UI/UX design with vanilla CSS
-- Privacy-first architecture with local storage
-
-Created for personal use and to demonstrate full-stack product development skills.
-
----
-
-## 🌟 Why NUDGE?
-
-Traditional habit trackers focus on streaks and punishment. NUDGE is different:
-- ✅ Celebrates what you *did* accomplish
-- ✅ Provides gentle encouragement, not guilt
-- ✅ Offers instant micro-wins to build momentum
-- ✅ Respects your privacy (no backend, no tracking)
-- ✅ Feels premium and polished from the first interaction
-
-**Give yourself a gentle nudge toward better days.** 🎯
+**Aryan Subhash**  
+Built as a portfolio piece to demonstrate product thinking, React development, and AI integration.
 
 ---
 
