@@ -8,6 +8,8 @@ A personal habit tracker with a witty AI coach that celebrates tiny wins and kee
 Try NUDGE instantly here:  
 👉 https://nudgecoach.vercel.app
 
+To use Coach Nudge’s full AI powers, add your own free API key from OpenRouter in the settings panel.
+
 ---
 
 ## What is NUDGE?
