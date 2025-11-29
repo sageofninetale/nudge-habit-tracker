@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Hero from "./components/Hero";
 import WelcomeModal from "./components/WelcomeModal";
-import Greeting from "./components/Greeting";
 import QuotesCarousel from "./components/QuotesCarousel";
+import CoachCard from "./components/CoachCard";
+import CelebrationModal from "./components/CelebrationModal";
+import { getEmojiForHabit } from "./lib/habitEmoji";
 import "./App.css";
 
 const STORAGE_KEY = "sparkHabit_v1";
@@ -24,64 +26,106 @@ const defaultHabits = [
   },
 ];
 
-// Automatic Icon Assignment based on habit name
+/**
+ * Check if a habit is unhealthy (smoking, vaping, drugs, etc.)
+ * @param {string} habitName - The habit name
+ * @returns {boolean} - True if unhealthy
+ */
+function isUnhealthyHabit(habitName) {
+  if (!habitName || typeof habitName !== 'string') return false;
+  
+  const name = habitName.toLowerCase().trim();
+  
+  const unhealthyKeywords = [
+    'smoke', 'smoking', 'cigarette', 'cig', 'ciggy', 'tobacco',
+    'vape', 'vaping', 'vapes',
+    'drug', 'drugs', 'cocaine', 'heroin', 'meth',
+    'junk food', 'binge', 'self harm', 'self-harm'
+  ];
+  
+  return unhealthyKeywords.some(keyword => name.includes(keyword));
+}
+
+// DEPRECATED: Replaced by getEmojiForHabit from lib/habitEmoji.js
 function getHabitIcon(habitName) {
   const name = habitName.toLowerCase();
 
-  // Sports & Fitness
-  if (name.includes('swim')) return '🏊';
+  // Running & Jogging
+  if (name.includes('run') || name.includes('running') || name.includes('jog')) return '�‍♂️';
+  
+  // Walking
+  if (name.includes('walk') || name.includes('walking') || name.includes('step')) return '🚶‍♂️';
+  
+  // Football/Soccer
   if (name.includes('football') || name.includes('soccer')) return '⚽';
+  
+  // Swimming
+  if (name.includes('swim') || name.includes('swimming')) return '🏊‍♂️';
+  
+  // Gym & Workout
+  if (name.includes('gym') || name.includes('workout') || name.includes('training') || name.includes('exercise')) return '🏋️‍♂️';
+  
+  // Dancing
+  if (name.includes('dance') || name.includes('dancing')) return '💃';
+  
+  // Yoga & Stretching
+  if (name.includes('yoga') || name.includes('stretch')) return '🧘‍♀️';
+  
+  // Reading
+  if (name.includes('read') || name.includes('reading') || name.includes('book')) return '�';
+  
+  // Study & Learning
+  if (name.includes('study') || name.includes('exam') || name.includes('revision') || name.includes('learn')) return '🧠';
+  
+  // Meditation & Breathing
+  if (name.includes('meditat') || name.includes('breathing') || name.includes('mindful')) return '🧘';
+  
+  // Water & Hydration
+  if (name.includes('water') || name.includes('drink') || name.includes('hydrat')) return '💧';
+  
+  // Sleep
+  if (name.includes('sleep') || name.includes('bed') || name.includes('rest')) return '�';
+  
+  // Cleaning & Chores
+  if (name.includes('clean') || name.includes('chore') || name.includes('tidy')) return '🧹';
+  
+  // Cooking
+  if (name.includes('cook') || name.includes('cooking') || name.includes('meal prep')) return '🍳';
+  
+  // Additional Sports
   if (name.includes('basketball')) return '🏀';
-  if (name.includes('tennis')) return '🎾';
-  if (name.includes('golf')) return '⛳';
-  if (name.includes('yoga')) return '🧘';
-  if (name.includes('gym') || name.includes('workout') || name.includes('exercise')) return '💪';
-  if (name.includes('run') || name.includes('jog')) return '🏃';
-  if (name.includes('walk')) return '🚶';
-  if (name.includes('bike') || name.includes('cycle')) return '🚴';
-  if (name.includes('dance')) return '💃';
-  if (name.includes('climb')) return '🧗';
-  if (name.includes('ski')) return '⛷️';
-  if (name.includes('surf')) return '🏄';
-
-  // Health & Wellness
-  if (name.includes('water') || name.includes('hydrat')) return '💧';
-  if (name.includes('sleep')) return '😴';
-  if (name.includes('meditat')) return '🧘';
-  if (name.includes('stretch')) return '🤸';
-  if (name.includes('vitamin') || name.includes('supplement')) return '💊';
-
-  // Food & Nutrition
-  if (name.includes('breakfast')) return '🍳';
-  if (name.includes('lunch')) return '🥗';
-  if (name.includes('dinner')) return '🍽️';
-  if (name.includes('fruit')) return '🍎';
-  if (name.includes('vegetable') || name.includes('veggie')) return '🥦';
-  if (name.includes('protein')) return '🥩';
-  if (name.includes('meal')) return '🍱';
-
-  // Productivity & Learning
-  if (name.includes('read')) return '📚';
+  if (name.includes('tennis')) return '�';
+  if (name.includes('bike') || name.includes('cycle') || name.includes('cycling')) return '🚴';
+  if (name.includes('climb') || name.includes('climbing')) return '🧗';
+  
+  // Writing & Journaling
   if (name.includes('write') || name.includes('journal')) return '✍️';
-  if (name.includes('study') || name.includes('learn')) return '📖';
-  if (name.includes('code') || name.includes('program')) return '💻';
-  if (name.includes('practice')) return '🎯';
-  if (name.includes('focus') || name.includes('work')) return '🎯';
-
-  // Creative & Hobbies
+  
+  // Coding
+  if (name.includes('code') || name.includes('coding') || name.includes('program')) return '💻';
+  
+  // Creative
   if (name.includes('music') || name.includes('instrument')) return '🎵';
   if (name.includes('paint') || name.includes('draw') || name.includes('art')) return '🎨';
   if (name.includes('photo')) return '📷';
-  if (name.includes('cook')) return '👨‍🍳';
+  
+  // Food
+  if (name.includes('breakfast')) return '🍳';
+  if (name.includes('fruit')) return '🍎';
+  if (name.includes('vegetable') || name.includes('veggie')) return '🥦';
+  
+  // Social & Wellness
+  if (name.includes('call') || name.includes('family') || name.includes('friend')) return '📞';
+  if (name.includes('gratitude') || name.includes('prayer')) return '🙏';
   if (name.includes('garden')) return '🌱';
 
-  // Social & Mindfulness
-  if (name.includes('call') || name.includes('family') || name.includes('friend')) return '📞';
-  if (name.includes('gratitude')) return '🙏';
-  if (name.includes('prayer')) return '🙏';
-  if (name.includes('smile') || name.includes('laugh')) return '😊';
-
-  // Default
+  // Hiking
+  if (name.includes('hike') || name.includes('hiking')) return '🥾';
+  
+  // Shower / Bath
+  if (name.includes('bath') || name.includes('bathe') || name.includes('shower')) return '🚿';
+  
+  // Default - use star for anything else
   return '⭐';
 }
 
@@ -134,6 +178,8 @@ function App() {
   const [showWelcome, setShowWelcome] = useState(() => {
     return !localStorage.getItem('nudgeUserName');
   });
+  const [showCelebration, setShowCelebration] = useState(false);
+  const hasShownCelebrationRef = useRef(false);
 
   useEffect(() => {
     saveHabits(habits);
@@ -156,6 +202,16 @@ function App() {
   function handleAddHabit(e) {
     e.preventDefault();
     if (!name.trim()) return;
+
+    // Check for unhealthy habits
+    if (isUnhealthyHabit(name)) {
+      alert(
+        "Coach Nudge says: that one's more of a villain than a habit 🫣\n\n" +
+        "Let's pick something that actually nudges your health in the right direction."
+      );
+      // Keep the input so they can edit it
+      return;
+    }
 
     const newHabit = {
       id: Date.now(),
@@ -208,6 +264,28 @@ function App() {
 
   const maxStreak = habits.length > 0 ? Math.max(...habits.map((h) => h.streak)) : 0;
 
+  // Check for 100% completion and show celebration modal
+  useEffect(() => {
+    if (
+      habits.length > 0 &&
+      completedToday === habits.length &&
+      !hasShownCelebrationRef.current
+    ) {
+      // Small delay to let the UI update first
+      const timer = setTimeout(() => {
+        setShowCelebration(true);
+        hasShownCelebrationRef.current = true;
+      }, 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [completedToday, habits.length]);
+
+  const handleCelebrationResponse = (response) => {
+    // Response is logged in CelebrationModal component
+    // Could save to localStorage or send to analytics here
+  };
+
   // Tiny Wins - Only meaningful ones
   const getTinyWins = () => {
     const wins = [];
@@ -238,11 +316,15 @@ function App() {
       {/* Welcome Modal */}
       {showWelcome && <WelcomeModal onClose={() => setShowWelcome(false)} />}
 
+      {/* Celebration Modal */}
+      <CelebrationModal
+        isOpen={showCelebration}
+        onClose={() => setShowCelebration(false)}
+        onResponse={handleCelebrationResponse}
+      />
+
       {/* Hero Section */}
       <Hero />
-
-      {/* Greeting */}
-      <Greeting />
 
       {/* Five Widget Grid */}
       <div className="widgets-grid">
@@ -314,7 +396,7 @@ function App() {
                 const doneToday =
                   habit.lastCompleted &&
                   isSameDay(habit.lastCompleted, new Date());
-                const icon = getHabitIcon(habit.name);
+                const icon = getEmojiForHabit(habit.name);
 
                 return (
                   <div
@@ -353,7 +435,18 @@ function App() {
           )}
         </div>
 
-        {/* Widget 3: Add a Habit */}
+        {/* Widget 3: Coach AI */}
+        <div className="premium-widget widget-coach-ai">
+          <CoachCard
+            stats={{
+              completedToday,
+              totalHabits: habits.length,
+              bestStreak: maxStreak
+            }}
+          />
+        </div>
+
+        {/* Widget 4: Add a Habit */}
         <div className="premium-widget widget-add">
           <h3 className="widget-title">Add a Habit</h3>
 
@@ -383,7 +476,7 @@ function App() {
           </form>
         </div>
 
-        {/* Widget 4: Tiny Wins */}
+        {/* Widget 5: Tiny Wins */}
         <div className="premium-widget widget-wins">
           <h3 className="widget-title">Tiny Wins</h3>
 
@@ -400,13 +493,23 @@ function App() {
           )}
         </div>
 
-        {/* Widget 5: Daily Motivation - Quotes Carousel */}
+        {/* Widget 6: Daily Motivation - Quotes Carousel */}
         <div className="premium-widget widget-quote-refined">
           <h3 className="widget-title">Daily Motivation</h3>
           <QuotesCarousel />
         </div>
 
       </div>
+
+      {/* Footer */}
+      <footer className="app-footer">
+        <p className="footer-text">
+          © 2025 Aryan Subhash. All rights reserved.
+        </p>
+        <p className="footer-text">
+          Made with ❤️ by Aryan Subhash
+        </p>
+      </footer>
     </div>
   );
 }
